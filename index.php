@@ -60,11 +60,11 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
         }
         $db = new Database();
         $subs_db = $db->getAll();
+        $ts3_VirtualServer = TeamSpeak3::factory("serverquery://". TSConfig::LOGIN .":" . TSConfig::PASSWORD . "@" . TSConfig::IP . ":". TSConfig::QPORT . "/?server_port=" . TSConfig::SPORT);
+        $ts3_VirtualServer->selfUpdate(['client_nickname' => TSConfig::Name . rand(0, 100)]);
         foreach($subs_db as $sub) {
             if(!array_key_exists($sub['id'], $subs)) {
                 try{
-                    $ts3_VirtualServer = TeamSpeak3::factory("serverquery://". TSConfig::LOGIN .":" . TSConfig::PASSWORD . "@" . TSConfig::IP . ":". TSConfig::QPORT . "/?server_port=" . TSConfig::SPORT);
-                    $ts3_VirtualServer->selfUpdate(['client_nickname' => TSConfig::Name . rand(0, 100)]);
                     $ts3_VirtualServer->serverGroupGetById(TSConfig::server_group)->clientDel($sub['uid']);
                     $db->delete($sub['id']);
                 } catch (Exception $ex) {
