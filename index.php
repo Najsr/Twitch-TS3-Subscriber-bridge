@@ -100,9 +100,9 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
                     echo 'You have been successfully added to Subscriber group!';
                 } catch (\Exception $ex) {
                     if ($ex->getCode() == 2561) {
-                        $db->add($id, $client['client_database_id']);
-                        echo 'You already have a subscriber\'s icon!';
-                        return;
+                            $db->add($id, $client['client_database_id']);
+                            echo 'You already have a subscriber\'s icon!';
+                            return;
                     }
                     echo 'Error ' . $ex->getCode() . ': ' . $ex->getMessage();
                 }
