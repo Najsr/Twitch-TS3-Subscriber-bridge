@@ -1,0 +1,11 @@
+{
+    "require": {
+        "nicklaw5/twitch-api-php": "^0.1.5",
+        "fkubis/teamspeak-php-framework": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Database\\" : "app/"
+        }
+    }
+}
