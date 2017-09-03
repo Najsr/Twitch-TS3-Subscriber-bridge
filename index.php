@@ -22,13 +22,13 @@ if (isset($_SESSION['streamer'])) {
         'client_secret' => Config::client_secret,
         'redirect_uri' => Config::redirect_uri,
         'scope' => ['channel_subscriptions']
-        ]);
+    ]);
 } else {
     $twitch = new TwitchApi([
-    'client_id' => Config::client_id,
-    'client_secret' => Config::client_secret,
-    'redirect_uri' => Config::redirect_uri,
-    'scope' => ['user_subscriptions']
+        'client_id' => Config::client_id,
+        'client_secret' => Config::client_secret,
+        'redirect_uri' => Config::redirect_uri,
+        'scope' => ['user_subscriptions']
     ]);
 }
 
@@ -62,9 +62,9 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
         $subs_db = $db->getAll();
         $ts3_VirtualServer = TeamSpeak3::factory("serverquery://". TSConfig::LOGIN .":" . TSConfig::PASSWORD . "@" . TSConfig::IP . ":". TSConfig::QPORT . "/?server_port=" . TSConfig::SPORT);
         $ts3_VirtualServer->selfUpdate(['client_nickname' => TSConfig::Name . rand(0, 100)]);
-        foreach($subs_db as $sub) {
-            if(!array_key_exists($sub['id'], $subs)) {
-                try{
+        foreach ($subs_db as $sub) {
+            if (!array_key_exists($sub['id'], $subs)) {
+                try {
                     $ts3_VirtualServer->serverGroupGetById(TSConfig::server_group)->clientDel($sub['uid']);
                     $db->delete($sub['id']);
                 } catch (Exception $ex) {
@@ -90,18 +90,18 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
             $ts3_VirtualServer->selfUpdate(['client_nickname' => TSConfig::Name . rand(0, 100)]);
             $clientList = $ts3_VirtualServer->clientList(['connection_client_ip' => $_SERVER['REMOTE_ADDR']]);
             foreach ($clientList as $client) {
-                if ($client['client_type'] == 1) 
+                if ($client['client_type'] == 1)
                     continue;
 
                 try {
                     $client = reset($clientList);
                     $client->addServerGroup(TSConfig::server_group);
                     $db->add($id, $client['client_database_id']);
-                    echo 'You have been successfully added to Subscriber group!';
+                    echo 'You have been successfully added to the Subscriber group!';
                 } catch (\Exception $ex) {
                     if ($ex->getCode() == 2561) {
                             $db->add($id, $client['client_database_id']);
-                            echo 'You already have a subscriber\'s icon!';
+                            echo 'You already have a subscriber icon!';
                             return;
                     }
                     echo 'Error ' . $ex->getCode() . ': ' . $ex->getMessage();
@@ -109,7 +109,7 @@ if (isset($_GET['code']) && isset($_GET['state']) && isset($_SESSION['state']) &
                 break;
             }
         } else {
-            echo 'You already have a subscriber\'s icon!';
+            echo 'You already have a subscriber icon!';
         }
     }
 }
